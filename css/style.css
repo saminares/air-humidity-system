@@ -1,0 +1,5 @@
+div#chart_div2:empty {
+    background-image: url("../img/error.png");
+    height: 200px;
+    
+}

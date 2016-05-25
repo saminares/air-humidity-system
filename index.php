@@ -1,56 +1,45 @@
 <html>
 <head>
 <title>ThingseeApp</title>
-<link rel="stylesheet" type="text/css" href="style.css">
-<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 <script language="JavaScript" src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
-<script language="JavaScript" src="scriptcam/scriptcam.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript" src="chart.js"></script>
+<script type="text/javascript" src="js/chart.js"></script>
+<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-<h1>Humidity Monitor</h1>
+
+<h1>Air Humidity Control</h1>
 <h2> Latest Value </h2>
-
-  <div id="hum_div"></div>
-
-<?php
-
-  //Resets water level counter
-  function runMyFunction() {
-    
-    $file = 'waterlevel.txt';
-    $current = file_get_contents('waterlevel.txt', true);
-    $current = "";
-    file_put_contents($file, $current);
-    echo "clear";
-  }
-  if (isset($_GET['hello'])) {
-    runMyFunction();
-  }
-
-?>
-
+<div id="hum_div"></div>
 <h2>Water tank level at 
 
 <?php
-
 //Displays the amount of remaining water as a percentage
-$current = file_get_contents('waterlevel.txt', true); 
-$amountLeft =  filesize("waterlevel.txt");
+$amountLeft =  filesize("php/waterlevel.txt");
 $percentage = round((1-$amountLeft /26) * 100,2);
 echo $percentage."%";
-
 ?>
-  </h2>
-Reset: <button><a href='index.php?hello=true' style="text-decoration:none">
-Tank Refilled!
-              </a>
-      </button>
-</br>
-</br>
-</br>
+
+<button><a href='php/reset.php' style="text-decoration:none"> Reset counter</a></button>
+</h2>
 <h2>Measurements from the last 24 hours </h2>
-<div id="chart_div2"></div>
+<div id="averagehum"> </div>
+<div id="chart_div2" ></div>
+
+
+
+<h2> Set desired humidity </h2>
+<form action="php/sethumidity.php" method="post">
+<input type="range" type="submit" name="newhum" min="25" max="60" value="0" step="1" onchange="showValue(this.value)" />
+<span id="range">25</span>
+<script type="text/javascript">
+function showValue(newValue)
+{
+  document.getElementById("range").innerHTML=newValue;
+}
+</script>
+<input type="submit" value="Submit">
+</form>
 </body>
 </html>
